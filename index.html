@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kulay Lab · Digital Color Systems &amp; Quantization</title>
+  <meta name="description" content="An interactive web manual on how computers store color: pixels, RGB, bit depth, quantization and color models.">
+  <meta name="author" content="Fernandino Velasquez">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23ff0000'/%3E%3Ccircle cx='20' cy='12' r='8' fill='%2300ff00' style='mix-blend-mode:screen'/%3E%3Ccircle cx='16' cy='19' r='8' fill='%230000ff' style='mix-blend-mode:screen'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" as="image" href="assets/images/hero.webp" type="image/webp">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Kulay Lab, back to top">
+        <span class="brand-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        Kulay Lab
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="visually-hidden">Menu</span>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Sections">
+        <ul>
+          <li><a href="#pixels">Pixels</a></li>
+          <li><a href="#mixer">Mixer</a></li>
+          <li><a href="#bit-depth">Bit Depth</a></li>
+          <li><a href="#models">Color Models</a></li>
+          <li><a href="#spec">Media Spec</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">An interactive manual on digital color</p>
+          <h1 id="hero-title">Every Color Is a Number</h1>
+          <p class="lede">Every photo, icon and web page on your screen is made of pixels, and every pixel is stored as numbers. <strong>Kulay</strong> is Filipino for color. This page shows how a computer turns color into numbers, how many colors a file can hold, and what happens when an image is squeezed into fewer colors.</p>
+
+          <div class="listen">
+            <p class="label" id="audio-label">Listen: one-minute summary</p>
+            <audio controls preload="metadata" aria-labelledby="audio-label">
+              <source src="assets/audio/narration.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            <details class="transcript">
+              <summary>Read the transcript</summary>
+              <p>Welcome to Kulay Lab. Kulay is the Filipino word for color. Every image on your screen is made of pixels, and every pixel is stored as numbers. Each pixel mixes three lights: red, green and blue. Each channel is a number from 0 to 255, which takes 8 bits. Three channels make 24 bits per pixel, enough for about 16.7 million colors. Bit depth is the number of bits per pixel. More bits mean more colors, and bigger files. Quantization replaces each pixel with the nearest color from a small palette. A full-color photo can drop to 256 colors, or even to 8. The file gets smaller, but smooth areas like skies can break into visible steps called banding. Screens use the RGB model, which adds light. Printers use CMYK, which subtracts it. And color pickers use HSL: hue, saturation and lightness. Now open the color mixer and listen to your color.</p>
+            </details>
+          </div>
+
+          <a class="button" href="#mixer">Open the color mixer</a>
+        </div>
+
+        <figure class="hero-figure">
+          <img src="assets/images/hero.webp" width="1200" height="750" fetchpriority="high"
+               alt="Extreme close-up of a screen: rows of tiny glowing red, green and blue stripes that together form each pixel.">
+          <figcaption>Up close, every pixel is three tiny lights: red, green and blue (simulated macro view).</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 1. Pixels and RGB -->
+    <section class="section" id="pixels" aria-labelledby="pixels-title">
+      <div class="container two-col">
+        <div>
+          <p class="section-num">01</p>
+          <h2 id="pixels-title">Pixels and RGB</h2>
+          <p>A pixel is the smallest dot a screen can light up. Each one is really three small lights: <span class="ch ch-r">red</span>, <span class="ch ch-g">green</span> and <span class="ch ch-b">blue</span>. By mixing the three at different strengths, a screen can show almost any color.</p>
+          <p>The computer stores each light's strength as a number from <strong>0</strong> (off) to <strong>255</strong> (full). 256 possible values fit exactly in <strong>8 bits</strong>, because 2<sup>8</sup> = 256.</p>
+
+          <h3>Worked example: #FF8000</h3>
+          <p>A hex code is just the three numbers written in base 16, two digits each.</p>
+          <div class="table-wrap">
+            <table class="breakdown">
+              <thead>
+                <tr><th scope="col">Channel</th><th scope="col">Hex</th><th scope="col">Decimal</th><th scope="col">Binary (8 bits)</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="ch ch-r">Red</span></th><td class="mono">FF</td><td class="mono">255</td><td class="mono">11111111</td></tr>
+                <tr><th scope="row"><span class="ch ch-g">Green</span></th><td class="mono">80</td><td class="mono">128</td><td class="mono">10000000</td></tr>
+                <tr><th scope="row"><span class="ch ch-b">Blue</span></th><td class="mono">00</td><td class="mono">0</td><td class="mono">00000000</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="result-line"><span class="chip" style="--chip:#ff8000" aria-hidden="true"></span> <span>Full red, half green, no blue: <strong>orange</strong>.</span></p>
+        </div>
+
+        <figure class="diagram">
+          <svg id="rgb-diagram" viewBox="0 0 400 320" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Additive color mixing</title>
+            <desc id="svg-desc">Three overlapping circles of red, green and blue light on black. Red and green make yellow, green and blue make cyan, red and blue make magenta, and all three make white.</desc>
+            <rect width="400" height="320" rx="16" fill="#000"/>
+            <g class="lights">
+              <circle class="light" data-light="r" cx="160" cy="130" r="84" fill="#ff0000"/>
+              <circle class="light" data-light="g" cx="240" cy="130" r="84" fill="#00ff00"/>
+              <circle class="light" data-light="b" cx="200" cy="198" r="84" fill="#0000ff"/>
+            </g>
+            <g class="region-labels" font-size="13" font-weight="700" text-anchor="middle">
+              <text data-region="r"   x="122" y="108">Red</text>
+              <text data-region="g"   x="278" y="108">Green</text>
+              <text data-region="b"   x="200" y="262">Blue</text>
+              <text data-region="rg"  x="200" y="92">Yellow</text>
+              <text data-region="gb"  x="252" y="196">Cyan</text>
+              <text data-region="rb"  x="148" y="196">Magenta</text>
+              <text data-region="rgb" x="200" y="160">White</text>
+            </g>
+          </svg>
+          <div class="light-toggles" role="group" aria-label="Turn each light on or off">
+            <button type="button" class="toggle t-r" data-toggle="r" aria-pressed="true">Red light</button>
+            <button type="button" class="toggle t-g" data-toggle="g" aria-pressed="true">Green light</button>
+            <button type="button" class="toggle t-b" data-toggle="b" aria-pressed="true">Blue light</button>
+          </div>
+          <figcaption>Additive mixing. Switch a light off to see which colors depend on it.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. Color Mixer -->
+    <section class="section section-alt" id="mixer" aria-labelledby="mixer-title">
+      <div class="container">
+        <p class="section-num">02</p>
+        <h2 id="mixer-title">Color Mixer</h2>
+        <p class="intro">Move the sliders to set each light from 0 to 255. The swatch, hex code and binary update as you go. Press <strong>Hear this color</strong> to turn its hue into a musical tone.</p>
+
+        <div class="mixer">
+          <div class="swatch" id="swatch" aria-hidden="true">
+            <span class="swatch-hex" id="swatch-hex">#FF8000</span>
+          </div>
+
+          <div class="mixer-controls">
+            <div class="slider-row" data-ch="r">
+              <label for="r">Red</label>
+              <input type="range" id="r" min="0" max="255" step="1" value="255">
+              <output for="r" id="r-out" class="mono">255</output>
+            </div>
+            <div class="slider-row" data-ch="g">
+              <label for="g">Green</label>
+              <input type="range" id="g" min="0" max="255" step="1" value="128">
+              <output for="g" id="g-out" class="mono">128</output>
+            </div>
+            <div class="slider-row" data-ch="b">
+              <label for="b">Blue</label>
+              <input type="range" id="b" min="0" max="255" step="1" value="0">
+              <output for="b" id="b-out" class="mono">0</output>
+            </div>
+
+            <div class="presets" role="group" aria-label="Preset colors">
+              <span class="label">Try</span>
+              <button type="button" class="preset" data-hex="#FF8000" style="--chip:#ff8000">Orange</button>
+              <button type="button" class="preset" data-hex="#FFFF00" style="--chip:#ffff00">Yellow</button>
+              <button type="button" class="preset" data-hex="#00FFFF" style="--chip:#00ffff">Cyan</button>
+              <button type="button" class="preset" data-hex="#7F00FF" style="--chip:#7f00ff">Violet</button>
+              <button type="button" class="preset" data-hex="#808080" style="--chip:#808080">Gray</button>
+            </div>
+          </div>
+
+          <div class="readouts">
+            <dl>
+              <div><dt>Hex</dt><dd class="mono big" id="out-hex">#FF8000</dd></div>
+              <div><dt>RGB</dt><dd class="mono" id="out-rgb">255, 128, 0</dd></div>
+              <div><dt>Binary</dt><dd class="mono binary" id="out-bin"><span class="ch-r">11111111</span> <span class="ch-g">10000000</span> <span class="ch-b">00000000</span></dd></div>
+              <div><dt>HSL</dt><dd class="mono" id="out-hsl">30°, 100%, 50%</dd></div>
+            </dl>
+            <button type="button" class="button button-sound" id="hear">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Hear this color
+            </button>
+            <p class="tone-note" id="tone-note" aria-live="polite">Pitch: <span class="mono" id="out-hz">275 Hz</span></p>
+          </div>
+        </div>
+
+        <details class="how">
+          <summary>How the sound is made</summary>
+          <p>The Web Audio API builds a sine-wave oscillator in your browser. The color's hue (0° to 360°) sets its pitch with <span class="mono">220 + (hue ÷ 360) × 660</span>, so red starts at 220&nbsp;Hz and the scale climbs through orange, green and blue up to 880&nbsp;Hz. Grays have no hue, so they play the base note.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 3. Bit Depth and Quantization -->
+    <section class="section" id="bit-depth" aria-labelledby="bit-title">
+      <div class="container">
+        <p class="section-num">03</p>
+        <h2 id="bit-title">Bit Depth and Quantization</h2>
+
+        <div class="two-col two-col-text">
+          <div>
+            <h3>Bit depth</h3>
+            <p>Bit depth is the number of bits used to describe the color of one pixel. Every extra bit doubles the number of possible colors.</p>
+            <ul class="depth-list">
+              <li><span class="mono">1-bit</span> <span>2<sup>1</sup> = <strong>2 colors</strong> (black and white)</span></li>
+              <li><span class="mono">8-bit</span> <span>2<sup>8</sup> = <strong>256 colors</strong></span></li>
+              <li><span class="mono">24-bit</span> <span>8 bits × 3 channels, so 2<sup>24</sup> = <strong>16,777,216 colors</strong></span></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Quantization</h3>
+            <p>Quantization reduces an image to a smaller set of colors called a <strong>palette</strong>. Each pixel is replaced with the nearest palette color, and the file only stores which palette slot each pixel uses. The file gets smaller, but smooth areas like skies can show visible steps called <strong>banding</strong>.</p>
+          </div>
+        </div>
+
+        <div class="posterize">
+          <div class="posterize-head">
+            <label for="bits"><span class="label">Try it</span> Bits per channel: <output id="bits-out" for="bits" class="mono">8</output></label>
+            <p class="mono posterize-count" id="bits-count">24 bits per pixel = 16,777,216 colors</p>
+          </div>
+          <input type="range" id="bits" min="1" max="8" step="1" value="8">
+          <canvas id="posterize-canvas" width="960" height="140" role="img" aria-label="A rainbow gradient drawn with the chosen number of bits per channel. Fewer bits show wider, visible color steps."></canvas>
+        </div>
+
+        <h3 class="compare-title">One photo, three palettes</h3>
+        <div class="compare" id="compare">
+          <figure>
+            <div class="frame"><img src="assets/images/photo-24bit.png" width="800" height="500" loading="lazy" decoding="async" alt="Sunset over mountains and a lake with smooth color gradients in the sky."></div>
+            <figcaption><strong>24-bit</strong> · 16.7 million colors <span class="size mono">283 KB</span></figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><img src="assets/images/photo-256.png" width="800" height="500" loading="lazy" decoding="async" alt="The same sunset reduced to 256 colors. Faint rings appear around the sun."></div>
+            <figcaption><strong>8-bit indexed</strong> · 256 colors <span class="size mono">61 KB</span></figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><img src="assets/images/photo-8.png" width="800" height="500" loading="lazy" decoding="async" alt="The same sunset reduced to 8 colors. The sky breaks into wide flat stripes."></div>
+            <figcaption><strong>3-bit palette</strong> · 8 colors <span class="size mono">11 KB</span></figcaption>
+          </figure>
+        </div>
+        <button type="button" class="button button-ghost" id="zoom" aria-pressed="false" aria-controls="compare">Zoom into the sun</button>
+
+        <aside class="callout" aria-labelledby="math-title">
+          <h3 id="math-title">The math for a Full HD image</h3>
+          <div class="math">
+            <p><span class="label">24-bit, 1920 × 1080</span><span class="mono">1920 × 1080 × 3 bytes = 6,220,800 bytes ≈ 6.2 MB</span></p>
+            <p><span class="label">256 colors, 1920 × 1080</span><span class="mono">1920 × 1080 × 1 byte = 2,073,600 bytes ≈ 2.1 MB</span><span class="mono muted">+ palette: 256 × 3 bytes = 768 bytes</span></p>
+          </div>
+          <p>Both figures are uncompressed. Compression such as PNG's DEFLATE then shrinks them further, which is why the files above are much smaller still.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4. Color Models -->
+    <section class="section section-alt" id="models" aria-labelledby="models-title">
+      <div class="container">
+        <p class="section-num">04</p>
+        <h2 id="models-title">Color Models</h2>
+        <p class="intro">A color model is a way to describe a color with numbers. The same color can be written in different models. Each card shows your current mixer color <span class="chip chip-live" id="models-chip" aria-hidden="true"></span> in that model.</p>
+
+        <div class="cards">
+          <article class="card">
+            <h3>RGB <span class="card-tag">Screens</span></h3>
+            <p><strong>Additive.</strong> Screens add light, so all three channels at full strength make white and all at zero make black.</p>
+            <div class="bars" id="bars-rgb"></div>
+          </article>
+          <article class="card">
+            <h3>CMYK <span class="card-tag">Print</span></h3>
+            <p><strong>Subtractive.</strong> Ink absorbs light, so the model works the opposite way. More ink makes a darker color, and K (black) saves colored ink.</p>
+            <div class="bars" id="bars-cmyk"></div>
+          </article>
+          <article class="card">
+            <h3>HSL <span class="card-tag">Pickers</span></h3>
+            <p><strong>Human terms.</strong> Hue, saturation and lightness describe color the way people talk about it, which is why color pickers use it.</p>
+            <div class="bars" id="bars-hsl"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Technical Media Spec -->
+    <section class="section" id="spec" aria-labelledby="spec-title">
+      <div class="container">
+        <p class="section-num">05</p>
+        <h2 id="spec-title">Technical Media Spec</h2>
+        <p class="intro">An audit of the media embedded on this page. <strong>Original</strong> is the uncompressed size: width × height × 3 bytes for images, and the 16-bit PCM WAV master for audio.</p>
+
+        <div class="table-wrap spec-wrap" role="region" aria-labelledby="spec-title" tabindex="0">
+          <table class="spec">
+            <thead>
+              <tr>
+                <th scope="col">Asset Name &amp; File Format</th>
+                <th scope="col">Original Size → Compressed</th>
+                <th scope="col">Color Depth / Quantization</th>
+                <th scope="col">Compression Algorithm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><span class="mono">hero.webp</span><small>WebP image, 1200 × 750</small></th>
+                <td><span class="mono">2.70 MB → 59.8 KB</span><small>98% smaller</small></td>
+                <td>24-bit RGB (8 bits per channel)</td>
+                <td>Lossy WebP (VP8 prediction + DCT), quality 78</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="mono">photo-256.png</span><small>PNG image, 800 × 500</small></th>
+                <td><span class="mono">1.20 MB → 61.0 KB</span><small>95% smaller</small></td>
+                <td>8-bit indexed (256-color palette, median cut, no dithering)</td>
+                <td>Lossless DEFLATE (LZ77 + Huffman)</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="mono">narration.mp3</span><small>MP3 audio, 67 s, mono</small></th>
+                <td><span class="mono">5.92 MB → 537 KB</span><small>91% smaller</small></td>
+                <td>16-bit PCM source, 44.1 kHz</td>
+                <td>Lossy MP3 (MDCT + Huffman), 64 kbps CBR</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="mono">photo-24bit.png</span><small>PNG image, 800 × 500</small></th>
+                <td><span class="mono">1.20 MB → 283 KB</span><small>76% smaller</small></td>
+                <td>24-bit truecolor (no palette)</td>
+                <td>Lossless DEFLATE (LZ77 + Huffman)</td>
+              </tr>
+              <tr>
+                <th scope="row"><span class="mono">photo-8.png</span><small>PNG image, 800 × 500</small></th>
+                <td><span class="mono">1.20 MB → 11.0 KB</span><small>99% smaller</small></td>
+                <td>8-color palette, stored as 4-bit indexed (PNG has no 3-bit mode)</td>
+                <td>Lossless DEFLATE (LZ77 + Huffman)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Sizes measured with <span class="mono">tools/build_assets.py</span>. 1 KB = 1,000 bytes, 1 MB = 1,000,000 bytes.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="brand brand-footer"><span class="brand-dots" aria-hidden="true"><i></i><i></i><i></i></span> Kulay Lab</p>
+        <p>An interactive web manual on Digital Color Systems &amp; Quantization by <strong>Fernandino Velasquez</strong>.</p>
+        <p class="muted">Images were rendered with Python (Pillow and NumPy) and quantized with median cut. The narration was generated with Windows text-to-speech.</p>
+      </div>
+      <div>
+        <h2 class="footer-title">References</h2>
+        <ul class="refs">
+          <li><a href="https://www.w3.org/TR/png-3/">W3C: Portable Network Graphics (PNG) Specification</a></li>
+          <li><a href="https://developers.google.com/speed/webp/docs/compression">Google: WebP Compression Techniques</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">MDN: Web Audio API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl">MDN: hsl() color notation</a></li>
+          <li><a href="https://www.brailleinstitute.org/freefont/">Braille Institute: Atkinson Hyperlegible</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

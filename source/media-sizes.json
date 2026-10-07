@@ -1,0 +1,52 @@
+{
+  "hero.webp": {
+    "master": 1161617,
+    "web": 59790,
+    "dims": [
+      1200,
+      750
+    ],
+    "raw": 2700000
+  },
+  "photo-24bit.png": {
+    "master": 1325117,
+    "web": 283122,
+    "dims": [
+      800,
+      500
+    ],
+    "raw": 1200000,
+    "png_bit_depth": 8,
+    "png_color_type": 2
+  },
+  "photo-256.png": {
+    "master": 1325117,
+    "web": 61048,
+    "dims": [
+      800,
+      500
+    ],
+    "raw": 1200000,
+    "png_bit_depth": 8,
+    "png_color_type": 3
+  },
+  "photo-8.png": {
+    "master": 1325117,
+    "web": 11011,
+    "dims": [
+      800,
+      500
+    ],
+    "raw": 1200000,
+    "png_bit_depth": 4,
+    "png_color_type": 3
+  },
+  "narration.mp3": {
+    "master": 5918348,
+    "web": 537077,
+    "rate": 44100,
+    "channels": 1,
+    "bits": 16,
+    "seconds": 67.1
+  }
+}
